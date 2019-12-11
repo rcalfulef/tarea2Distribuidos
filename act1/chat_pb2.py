@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nchat.proto\"@\n\x07Mensaje\x12\x0f\n\x07mensaje\x18\x01 \x01(\t\x12\x10\n\x08idEmisor\x18\x02 \x01(\x05\x12\x12\n\nidReceptor\x18\x03 \x01(\x05\"\x1d\n\x0cMensajeReply\x12\r\n\x05value\x18\x01 \x01(\x05\x32\x32\n\x04\x43hat\x12*\n\rEnviarMensaje\x12\x08.Mensaje\x1a\r.MensajeReply\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\nchat.proto\"_\n\x07Mensaje\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07mensaje\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x12\x10\n\x08idEmisor\x18\x04 \x01(\x05\x12\x12\n\nidReceptor\x18\x05 \x01(\x05\"\x1d\n\x0cMensajeReply\x12\r\n\x05value\x18\x01 \x01(\x05\"\x15\n\x07\x43liente\x12\n\n\x02id\x18\x01 \x01(\t\"\x07\n\x05Vacio2\x8a\x01\n\x04\x43hat\x12*\n\rEnviarMensaje\x12\x08.Mensaje\x1a\r.MensajeReply\"\x00\x12\'\n\x0fListadoClientes\x12\x06.Vacio\x1a\x08.Cliente\"\x00\x30\x01\x12-\n\x13MensajesEnviadosPor\x12\x08.Cliente\x1a\x08.Mensaje\"\x00\x30\x01\x62\x06proto3')
 )
 
 
@@ -34,22 +34,36 @@ _MENSAJE = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='mensaje', full_name='Mensaje.mensaje', index=0,
+      name='id', full_name='Mensaje.id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='idEmisor', full_name='Mensaje.idEmisor', index=1,
-      number=2, type=5, cpp_type=1, label=1,
+      name='mensaje', full_name='Mensaje.mensaje', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='timestamp', full_name='Mensaje.timestamp', index=2,
+      number=3, type=3, cpp_type=2, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='idReceptor', full_name='Mensaje.idReceptor', index=2,
-      number=3, type=5, cpp_type=1, label=1,
+      name='idEmisor', full_name='Mensaje.idEmisor', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='idReceptor', full_name='Mensaje.idReceptor', index=4,
+      number=5, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -67,7 +81,7 @@ _MENSAJE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=14,
-  serialized_end=78,
+  serialized_end=109,
 )
 
 
@@ -97,12 +111,69 @@ _MENSAJEREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=80,
-  serialized_end=109,
+  serialized_start=111,
+  serialized_end=140,
+)
+
+
+_CLIENTE = _descriptor.Descriptor(
+  name='Cliente',
+  full_name='Cliente',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='Cliente.id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=142,
+  serialized_end=163,
+)
+
+
+_VACIO = _descriptor.Descriptor(
+  name='Vacio',
+  full_name='Vacio',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=165,
+  serialized_end=172,
 )
 
 DESCRIPTOR.message_types_by_name['Mensaje'] = _MENSAJE
 DESCRIPTOR.message_types_by_name['MensajeReply'] = _MENSAJEREPLY
+DESCRIPTOR.message_types_by_name['Cliente'] = _CLIENTE
+DESCRIPTOR.message_types_by_name['Vacio'] = _VACIO
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Mensaje = _reflection.GeneratedProtocolMessageType('Mensaje', (_message.Message,), {
@@ -119,6 +190,20 @@ MensajeReply = _reflection.GeneratedProtocolMessageType('MensajeReply', (_messag
   })
 _sym_db.RegisterMessage(MensajeReply)
 
+Cliente = _reflection.GeneratedProtocolMessageType('Cliente', (_message.Message,), {
+  'DESCRIPTOR' : _CLIENTE,
+  '__module__' : 'chat_pb2'
+  # @@protoc_insertion_point(class_scope:Cliente)
+  })
+_sym_db.RegisterMessage(Cliente)
+
+Vacio = _reflection.GeneratedProtocolMessageType('Vacio', (_message.Message,), {
+  'DESCRIPTOR' : _VACIO,
+  '__module__' : 'chat_pb2'
+  # @@protoc_insertion_point(class_scope:Vacio)
+  })
+_sym_db.RegisterMessage(Vacio)
+
 
 
 _CHAT = _descriptor.ServiceDescriptor(
@@ -127,8 +212,8 @@ _CHAT = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=111,
-  serialized_end=161,
+  serialized_start=175,
+  serialized_end=313,
   methods=[
   _descriptor.MethodDescriptor(
     name='EnviarMensaje',
@@ -137,6 +222,24 @@ _CHAT = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_MENSAJE,
     output_type=_MENSAJEREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ListadoClientes',
+    full_name='Chat.ListadoClientes',
+    index=1,
+    containing_service=None,
+    input_type=_VACIO,
+    output_type=_CLIENTE,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='MensajesEnviadosPor',
+    full_name='Chat.MensajesEnviadosPor',
+    index=2,
+    containing_service=None,
+    input_type=_CLIENTE,
+    output_type=_MENSAJE,
     serialized_options=None,
   ),
 ])

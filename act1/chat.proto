@@ -1,15 +1,30 @@
 syntax = "proto3";
 
 message Mensaje{
-    string mensaje = 1;
-    int32 idEmisor = 2;
-    int32 idReceptor = 3;
+    string id = 1; 
+    string mensaje = 2;
+    int64 timestamp = 3;
+    int32 idEmisor = 4;
+    int32 idReceptor = 5;
 }
 
 message MensajeReply{
     int32 value = 1;
 }
 
+message Cliente{
+    string id =1;
+}
+
+message Vacio{}
+
 service Chat{
     rpc EnviarMensaje(Mensaje) returns (MensajeReply) {}
+
+    rpc ListadoClientes(Vacio) returns (stream Cliente) {}
+
+    rpc MensajesEnviadosPor(Cliente) returns (stream Mensaje) {}
 }
+
+
+// python -m grpc_tools.protoc -I --python_out=. --grpc_python_out=. chat.proto

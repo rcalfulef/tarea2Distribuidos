@@ -19,6 +19,16 @@ class ChatStub(object):
         request_serializer=chat__pb2.Mensaje.SerializeToString,
         response_deserializer=chat__pb2.MensajeReply.FromString,
         )
+    self.ListadoClientes = channel.unary_stream(
+        '/Chat/ListadoClientes',
+        request_serializer=chat__pb2.Vacio.SerializeToString,
+        response_deserializer=chat__pb2.Cliente.FromString,
+        )
+    self.MensajesEnviadosPor = channel.unary_stream(
+        '/Chat/MensajesEnviadosPor',
+        request_serializer=chat__pb2.Cliente.SerializeToString,
+        response_deserializer=chat__pb2.Mensaje.FromString,
+        )
 
 
 class ChatServicer(object):
@@ -32,6 +42,20 @@ class ChatServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ListadoClientes(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def MensajesEnviadosPor(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_ChatServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -39,6 +63,16 @@ def add_ChatServicer_to_server(servicer, server):
           servicer.EnviarMensaje,
           request_deserializer=chat__pb2.Mensaje.FromString,
           response_serializer=chat__pb2.MensajeReply.SerializeToString,
+      ),
+      'ListadoClientes': grpc.unary_stream_rpc_method_handler(
+          servicer.ListadoClientes,
+          request_deserializer=chat__pb2.Vacio.FromString,
+          response_serializer=chat__pb2.Cliente.SerializeToString,
+      ),
+      'MensajesEnviadosPor': grpc.unary_stream_rpc_method_handler(
+          servicer.MensajesEnviadosPor,
+          request_deserializer=chat__pb2.Cliente.FromString,
+          response_serializer=chat__pb2.Mensaje.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
