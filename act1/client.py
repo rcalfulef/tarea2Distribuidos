@@ -34,10 +34,13 @@ class Client:
         opcion = input("Opcion: ")
         while(opcion != '3'):
             if opcion == '1':
+                print('\n\nclientes conectados:')
                 self.listaClientes()
             elif opcion == '2':
                 print('Seleccione alguno de los siguientes clientes')
                 self.listaClientes()
+                clientSelect = input("Seleccione cliente: ")
+                
 
             else:
                 print('ingrese una opcion valida')
@@ -97,7 +100,7 @@ class Client:
 
     def listaClientes(self):
         cont = 1
-        print('\n\nclientes conectados:')
+        
         for cliente in self.conn.ListadoClientes(chat.Vacio()):
             print("{}. {}".format(cont,cliente.username))
             cont+=1
