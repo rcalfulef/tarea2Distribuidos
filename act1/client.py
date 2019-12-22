@@ -13,16 +13,40 @@ address = 'localhost'
 port = 280414
 
 class Client:
-    def __init__(self,u: str,window):
+    def __init__(self,window):
         self.id = id # definimos el id del cliente
         # the frame to put ui components on
         self.window = window
-        self.username = u
+        self.username = None
         # create a gRPC channel + stub
         channel = grpc.insecure_channel(address + ':' + str(port))
         self.conn = rpc.ChatStub(channel)
+        self.agregarCliente()
+        print("\nBienvenido {}!".format (self.username))
+        print("Selecciona alguna de las siguientes opciones")
+        print("1. ver lista de clientes")
+        print("2. enviar un mensaje a cliente")
+        print("3. salir")
+
         # create new listening thread for when new message streams come in
         threading.Thread(target=self.__listen__for__messages, daemon=True).start()
+        
+        opcion = input("Opcion: ")
+        while(opcion != '3'):
+            if opcion == '1':
+                self.listaClientes()
+            elif opcion == '2':
+                print('Seleccione alguno de los siguientes clientes')
+                self.listaClientes()
+
+            else:
+                print('ingrese una opcion valida')
+            print("\n\nSelecciona alguna de las siguientes opciones")
+            print("1. ver lista de clientes")
+            print("2. enviar un mensaje a cliente")
+            print("3. salir")
+            opcion = input("Opcion: ")
+
         self.__setup_ui()
         self.window.mainloop()
 
@@ -35,7 +59,25 @@ class Client:
             print("R[{}] {}".format(note.name, note.message))
             self.chat_list.insert(END,"[{}] {}\n".format(note.idEmisor, note.mensaje))
 
-    
+    def agregarCliente(self):
+        while self.username == None:
+            temp = input("Ingrese nombre de usuario: ")
+            c = chat.Cliente()
+            c.username = temp
+            code = self.conn.AgregarCliente(c).value
+            if code == 1:
+                self.username = temp
+                return temp
+            elif code == 2:
+                print("un error a ocurrido intentalo nuevamente")
+            elif code == 3:
+                print('Este usuario ya existe, prueba con otro nombre')
+            
+
+        # c = chat.Cliente()
+        # c.username = self.username
+        # self.conn.AgregarCliente(c)
+        
 
     def enviarMensaje(self,event):
         """
@@ -52,6 +94,13 @@ class Client:
         # texto = input("Ingrese un mensaje")
         # seconds = time.time()
         # stub.EnviarMensaje(chat_pb2.Mensaje(1,texto,seconds,1,2))
+
+    def listaClientes(self):
+        cont = 1
+        print('\n\nclientes conectados:')
+        for cliente in self.conn.ListadoClientes(chat.Vacio()):
+            print("{}. {}".format(cont,cliente.username))
+            cont+=1
 
     def __setup_ui(self):
         self.chat_list = Text()
@@ -70,9 +119,9 @@ if __name__  == '__main__':
     frame = Frame(root, width = 300, height = 300)
     frame.pack()
     root.withdraw()
-    username = None
-    while username == None:
-        # retrieve a username so we can distinguish all the different clients
-        username = simpledialog.askstring("Username", "What's your username?", parent=root)
+    # username = None
+    # while username == None:
+    #     # retrieve a username so we can distinguish all the different clients
+    #     username = input("ingrese nombre de usuario: ")
     root.deiconify()  # don't remember why this was needed anymore...
-    c = Client(username,frame) # this starts a client and thus a thread which keeps connection to server open
+    c = Client(frame) # this starts a client and thus a thread which keeps connection to server open

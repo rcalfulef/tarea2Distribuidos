@@ -21,6 +21,8 @@ message Vacio{}
 service Chat{
     rpc ChatStream(Vacio) returns (stream Mensaje){}
     
+    rpc AgregarCliente(Cliente) returns (MensajeReply) {}  // al conectarse un cliente, se agrega a la lista del servidor
+
     rpc EnviarMensaje(Mensaje) returns (MensajeReply) {}
 
     rpc ListadoClientes(Vacio) returns (stream Cliente) {}

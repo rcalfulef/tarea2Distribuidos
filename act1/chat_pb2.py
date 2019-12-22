@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nchat.proto\"k\n\x07Mensaje\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07mensaje\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x12\x16\n\x0eusernameEmisor\x18\x04 \x01(\t\x12\x18\n\x10usernameReceptor\x18\x05 \x01(\t\"\x1d\n\x0cMensajeReply\x12\r\n\x05value\x18\x01 \x01(\x05\"\x1b\n\x07\x43liente\x12\x10\n\x08username\x18\x01 \x01(\t\"\x07\n\x05Vacio2\xae\x01\n\x04\x43hat\x12\"\n\nChatStream\x12\x06.Vacio\x1a\x08.Mensaje\"\x00\x30\x01\x12*\n\rEnviarMensaje\x12\x08.Mensaje\x1a\r.MensajeReply\"\x00\x12\'\n\x0fListadoClientes\x12\x06.Vacio\x1a\x08.Cliente\"\x00\x30\x01\x12-\n\x13MensajesEnviadosPor\x12\x08.Cliente\x1a\x08.Mensaje\"\x00\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\nchat.proto\"k\n\x07Mensaje\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07mensaje\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x12\x16\n\x0eusernameEmisor\x18\x04 \x01(\t\x12\x18\n\x10usernameReceptor\x18\x05 \x01(\t\"\x1d\n\x0cMensajeReply\x12\r\n\x05value\x18\x01 \x01(\x05\"\x1b\n\x07\x43liente\x12\x10\n\x08username\x18\x01 \x01(\t\"\x07\n\x05Vacio2\xdb\x01\n\x04\x43hat\x12\"\n\nChatStream\x12\x06.Vacio\x1a\x08.Mensaje\"\x00\x30\x01\x12+\n\x0e\x41gregarCliente\x12\x08.Cliente\x1a\r.MensajeReply\"\x00\x12*\n\rEnviarMensaje\x12\x08.Mensaje\x1a\r.MensajeReply\"\x00\x12\'\n\x0fListadoClientes\x12\x06.Vacio\x1a\x08.Cliente\"\x00\x30\x01\x12-\n\x13MensajesEnviadosPor\x12\x08.Cliente\x1a\x08.Mensaje\"\x00\x30\x01\x62\x06proto3')
 )
 
 
@@ -213,7 +213,7 @@ _CHAT = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   serialized_start=193,
-  serialized_end=367,
+  serialized_end=412,
   methods=[
   _descriptor.MethodDescriptor(
     name='ChatStream',
@@ -225,9 +225,18 @@ _CHAT = _descriptor.ServiceDescriptor(
     serialized_options=None,
   ),
   _descriptor.MethodDescriptor(
+    name='AgregarCliente',
+    full_name='Chat.AgregarCliente',
+    index=1,
+    containing_service=None,
+    input_type=_CLIENTE,
+    output_type=_MENSAJEREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
     name='EnviarMensaje',
     full_name='Chat.EnviarMensaje',
-    index=1,
+    index=2,
     containing_service=None,
     input_type=_MENSAJE,
     output_type=_MENSAJEREPLY,
@@ -236,7 +245,7 @@ _CHAT = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='ListadoClientes',
     full_name='Chat.ListadoClientes',
-    index=2,
+    index=3,
     containing_service=None,
     input_type=_VACIO,
     output_type=_CLIENTE,
@@ -245,7 +254,7 @@ _CHAT = _descriptor.ServiceDescriptor(
   _descriptor.MethodDescriptor(
     name='MensajesEnviadosPor',
     full_name='Chat.MensajesEnviadosPor',
-    index=3,
+    index=4,
     containing_service=None,
     input_type=_CLIENTE,
     output_type=_MENSAJE,
