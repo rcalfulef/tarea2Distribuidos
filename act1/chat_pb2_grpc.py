@@ -14,6 +14,11 @@ class ChatStub(object):
     Args:
       channel: A grpc.Channel.
     """
+    self.ChatStream = channel.unary_stream(
+        '/Chat/ChatStream',
+        request_serializer=chat__pb2.Vacio.SerializeToString,
+        response_deserializer=chat__pb2.Mensaje.FromString,
+        )
     self.EnviarMensaje = channel.unary_unary(
         '/Chat/EnviarMensaje',
         request_serializer=chat__pb2.Mensaje.SerializeToString,
@@ -34,6 +39,13 @@ class ChatStub(object):
 class ChatServicer(object):
   # missing associated documentation comment in .proto file
   pass
+
+  def ChatStream(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
 
   def EnviarMensaje(self, request, context):
     # missing associated documentation comment in .proto file
@@ -59,6 +71,11 @@ class ChatServicer(object):
 
 def add_ChatServicer_to_server(servicer, server):
   rpc_method_handlers = {
+      'ChatStream': grpc.unary_stream_rpc_method_handler(
+          servicer.ChatStream,
+          request_deserializer=chat__pb2.Vacio.FromString,
+          response_serializer=chat__pb2.Mensaje.SerializeToString,
+      ),
       'EnviarMensaje': grpc.unary_unary_rpc_method_handler(
           servicer.EnviarMensaje,
           request_deserializer=chat__pb2.Mensaje.FromString,

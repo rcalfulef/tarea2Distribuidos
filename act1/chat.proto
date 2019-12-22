@@ -1,24 +1,26 @@
 syntax = "proto3";
 
 message Mensaje{
-    string id = 1; 
-    string mensaje = 2;
-    int64 timestamp = 3;
-    int32 idEmisor = 4;
-    int32 idReceptor = 5;
+    string id = 1; // id unica mensaje
+    string mensaje = 2; // mensaje
+    int64 timestamp = 3;  // marca de tiempo
+    string usernameEmisor = 4;  // username del emisor
+    string usernameReceptor = 5;  // username del receptor
 }
 
 message MensajeReply{
-    int32 value = 1;
+    int32 value = 1; // 1 si el mensaje se entrego correctamente, de lo contrario 2
 }
 
 message Cliente{
-    string id =1;
+    string username = 1; // nombre de usuario 
 }
 
 message Vacio{}
 
 service Chat{
+    rpc ChatStream(Vacio) returns (stream Mensaje){}
+    
     rpc EnviarMensaje(Mensaje) returns (MensajeReply) {}
 
     rpc ListadoClientes(Vacio) returns (stream Cliente) {}
