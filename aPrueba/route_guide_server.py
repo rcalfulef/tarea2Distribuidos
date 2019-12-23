@@ -47,7 +47,7 @@ class RouteGuideServicer(route_guide_pb2_grpc.RouteGuideServicer):
                 feature.location.longitude <= right and
                 feature.location.latitude >= bottom and
                 feature.location.latitude <= top):
-            yield feature
+                    yield feature
 
 
     def RecordRoute(self, request_iterator, context):

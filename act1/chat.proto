@@ -3,7 +3,7 @@ syntax = "proto3";
 message Mensaje{
     string id = 1; // id unica mensaje
     string mensaje = 2; // mensaje
-    int64 timestamp = 3;  // marca de tiempo
+    float timestamp = 3;  // marca de tiempo
     string usernameEmisor = 4;  // username del emisor
     string usernameReceptor = 5;  // username del receptor
 }

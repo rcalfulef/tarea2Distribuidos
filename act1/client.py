@@ -8,6 +8,7 @@ import chat_pb2 as chat
 import chat_pb2_grpc as rpc
 
 import time
+from datetime import datetime
 
 address = 'localhost'
 port = 280414
@@ -26,42 +27,50 @@ class Client:
         print("Selecciona alguna de las siguientes opciones")
         print("1. ver lista de clientes")
         print("2. enviar un mensaje a cliente")
-        print("3. salir")
+        print("3. Mostar mis mensajes enviados")
+        print("4. Salir")
 
-        # create new listening thread for when new message streams come in
         threading.Thread(target=self.__listen__for__messages, daemon=True).start()
         
         opcion = input("Opcion: ")
-        while(opcion != '3'):
+        while(opcion != '4'):
             if opcion == '1':
                 print('\n\nclientes conectados:')
                 self.listaClientes()
             elif opcion == '2':
                 print('Seleccione alguno de los siguientes clientes')
                 self.listaClientes()
-                clientSelect = input("Seleccione cliente: ")
-                
+                clientSelect = input("Nombre del cliente receptor: ")
+                message = input("Mensaje: ")
+                m = chat.Mensaje()
+                m.id = "1"
+                m.mensaje = message
+                m.timestamp = time.time()
+                m.usernameEmisor = self.username
+                m.usernameReceptor = clientSelect
+                code = self.conn.EnviarMensaje(m)
+
+            elif opcion == "3":
+                self.mensajesEnviados()
 
             else:
                 print('ingrese una opcion valida')
             print("\n\nSelecciona alguna de las siguientes opciones")
             print("1. ver lista de clientes")
-            print("2. enviar un mensaje a cliente")
-            print("3. salir")
+            print("2. Enviar un mensaje")
+            print("3. Mostar mis mensajes enviados")
+            print("4. Salir")
             opcion = input("Opcion: ")
 
         self.__setup_ui()
         self.window.mainloop()
 
     def __listen__for__messages(self):
-        """
-        This method will be ran in a separate thread as the main/ui thread, because the for-in call is blocking
-        when waiting for new messages
-        """
+        """funcion que se encarga de mostrar los mensajes solo si el destinatario es el usuario actual"""
         for note in self.conn.ChatStream(chat.Vacio()):
-            print("R[{}] {}".format(note.name, note.message))
-            self.chat_list.insert(END,"[{}] {}\n".format(note.idEmisor, note.mensaje))
-
+            if note.usernameReceptor == self.username:
+                print("Mensaje recibido de {}: {}".format(note.usernameEmisor, note.mensaje))
+            
     def agregarCliente(self):
         while self.username == None:
             temp = input("Ingrese nombre de usuario: ")
@@ -76,11 +85,6 @@ class Client:
             elif code == 3:
                 print('Este usuario ya existe, prueba con otro nombre')
             
-
-        # c = chat.Cliente()
-        # c.username = self.username
-        # self.conn.AgregarCliente(c)
-        
 
     def enviarMensaje(self,event):
         """
@@ -104,6 +108,13 @@ class Client:
         for cliente in self.conn.ListadoClientes(chat.Vacio()):
             print("{}. {}".format(cont,cliente.username))
             cont+=1
+
+    def mensajesEnviados(self):
+
+        c = chat.Cliente()
+        c.username = self.username
+        for mensaje in self.conn.MensajesEnviadosPor(c):
+            print("{}: {}".format(mensaje.usernameReceptor,mensaje.mensaje))
 
     def __setup_ui(self):
         self.chat_list = Text()

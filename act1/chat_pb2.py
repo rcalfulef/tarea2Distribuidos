@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nchat.proto\"k\n\x07Mensaje\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07mensaje\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x03\x12\x16\n\x0eusernameEmisor\x18\x04 \x01(\t\x12\x18\n\x10usernameReceptor\x18\x05 \x01(\t\"\x1d\n\x0cMensajeReply\x12\r\n\x05value\x18\x01 \x01(\x05\"\x1b\n\x07\x43liente\x12\x10\n\x08username\x18\x01 \x01(\t\"\x07\n\x05Vacio2\xdb\x01\n\x04\x43hat\x12\"\n\nChatStream\x12\x06.Vacio\x1a\x08.Mensaje\"\x00\x30\x01\x12+\n\x0e\x41gregarCliente\x12\x08.Cliente\x1a\r.MensajeReply\"\x00\x12*\n\rEnviarMensaje\x12\x08.Mensaje\x1a\r.MensajeReply\"\x00\x12\'\n\x0fListadoClientes\x12\x06.Vacio\x1a\x08.Cliente\"\x00\x30\x01\x12-\n\x13MensajesEnviadosPor\x12\x08.Cliente\x1a\x08.Mensaje\"\x00\x30\x01\x62\x06proto3')
+  serialized_pb=_b('\n\nchat.proto\"k\n\x07Mensaje\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0f\n\x07mensaje\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x02\x12\x16\n\x0eusernameEmisor\x18\x04 \x01(\t\x12\x18\n\x10usernameReceptor\x18\x05 \x01(\t\"\x1d\n\x0cMensajeReply\x12\r\n\x05value\x18\x01 \x01(\x05\"\x1b\n\x07\x43liente\x12\x10\n\x08username\x18\x01 \x01(\t\"\x07\n\x05Vacio2\xdb\x01\n\x04\x43hat\x12\"\n\nChatStream\x12\x06.Vacio\x1a\x08.Mensaje\"\x00\x30\x01\x12+\n\x0e\x41gregarCliente\x12\x08.Cliente\x1a\r.MensajeReply\"\x00\x12*\n\rEnviarMensaje\x12\x08.Mensaje\x1a\r.MensajeReply\"\x00\x12\'\n\x0fListadoClientes\x12\x06.Vacio\x1a\x08.Cliente\"\x00\x30\x01\x12-\n\x13MensajesEnviadosPor\x12\x08.Cliente\x1a\x08.Mensaje\"\x00\x30\x01\x62\x06proto3')
 )
 
 
@@ -49,8 +49,8 @@ _MENSAJE = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='timestamp', full_name='Mensaje.timestamp', index=2,
-      number=3, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
+      number=3, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
