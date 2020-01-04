@@ -5,12 +5,19 @@ import time
 
 import chat_pb2 as chat
 import chat_pb2_grpc as rpc
+import datetime
+
+def escribirEnLog(texto):
+    f = open("log.txt","a")
+    f.write(texto)
+    f.close()
 
 class ChatServer(rpc.ChatServicer):
 
     def __init__(self):
         self.chats = []     # lista de mensajes
         self.clients = []   # lista de clientes
+    
 
     def ChatStream(self, request_iterator, context): # funcion encargada de entregar los mensajes a los clientes  
         ultimoIndice = 0
@@ -24,7 +31,6 @@ class ChatServer(rpc.ChatServicer):
         try:
             if request not in self.clients:
                 self.clients.append(request)
-                # print(self.clients)
                 return chat.MensajeReply(value = 1) # se retorna 1 si el cliente se agrego con exito
             else: 
                 return chat.MensajeReply(value = 3) # si el cliente ya existe
@@ -34,11 +40,18 @@ class ChatServer(rpc.ChatServicer):
     def EnviarMensaje(self, request: chat.Mensaje, context):
         """recibe un mensaje desde algun cliente y lo guarda en la lista de mensajes"""
         try:
-            print("{}\n{}->{}: {}".format(request.timestamp,request.usernameEmisor,request.usernameReceptor, request.mensaje))
-            self.chats.append(request)
-            return chat.MensajeReply(value = 1)
-        except:
+            for client in self.clients:
+                if request.usernameReceptor == client.username:
+                    tiempo = datetime.datetime.fromtimestamp(request.timestamp).strftime('%d-%m-%Y %H:%M:%S')
+                    temp = "{}\n{}->{}: {}\n\n".format(tiempo,request.usernameEmisor,request.usernameReceptor, request.mensaje) 
+                    print(temp)
+                    escribirEnLog(temp)            
+                    self.chats.append(request)
+                    return chat.MensajeReply(value = 1)
+            
             return chat.MensajeReply(value = 2)
+        except:
+            return chat.MensajeReply(value = 3)
 
     def ListadoClientes(self, request: chat.Vacio, context):
         for cliente in self.clients:

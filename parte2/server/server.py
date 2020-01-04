@@ -2,16 +2,20 @@ import pika
 import time
 import json
 import threading
+import datetime
 
 clients = {}
 mensajes = []
-
+def escribirEnLog(texto):
+    f = open("log.txt","a")
+    f.write(texto)
+    f.close()
 
 def on_request(ch, method, properties, body):
     global mensajes
     global clients
     request = json.loads(body)
-    print(request)
+
     message = {}
     if request['option'] == 0:
         if request['username'] not in clients:
@@ -35,22 +39,31 @@ def on_request(ch, method, properties, body):
 
     elif request['option'] == 2:
         try:
+            if request['receiver'] in clients:
 
-            mensajes.append(request)
-            message = json.dumps({
+                mensajes.append(request)
+                message = json.dumps({
+                    'option': 2,
+                    'message': request['message'],
+                    'emisor': request['username']
+                })
+                tiempo =  time.time()
+                tiempo = datetime.datetime.fromtimestamp(tiempo).strftime('%d-%m-%Y %H:%M:%S')
+
+                temp = "{}\n{}->{}:{}\n".format(tiempo,request['username'],request['receiver'],request['message'])
+                print(temp)
+                escribirEnLog(temp)
+                channel.basic_publish(
+                    exchange='clients',
+                    routing_key=clients[request['receiver']],
+                    body=message)
+
+                return
+            else:
+                message = json.dumps({
                 'option': 2,
-                'message': request['message'],
-                'emisor': request['username']
-            })
-            print(message)
-            print(clients[request['receiver']])
-
-            channel.basic_publish(
-                exchange='clients',
-                routing_key=clients[request['receiver']],
-                body=message)
-
-            return
+                'message': None
+                })
         except:
             message = json.dumps({
                 'option': 2,
@@ -75,7 +88,6 @@ def on_request(ch, method, properties, body):
         routing_key=request['queue_name'],
         body=message)
 
-    print(clients)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 

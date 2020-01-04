@@ -14,12 +14,9 @@ address = 'localhost'
 port = 280414
 
 class Client:
-    def __init__(self,window):
-        self.id = id # definimos el id del cliente
-        # the frame to put ui components on
-        self.window = window
+    def __init__(self):
         self.username = None
-        # create a gRPC channel + stub
+        # se crea el canar grpc
         channel = grpc.insecure_channel(address + ':' + str(port))
         self.conn = rpc.ChatStub(channel)
         self.agregarCliente()
@@ -49,12 +46,17 @@ class Client:
                 m.usernameEmisor = self.username
                 m.usernameReceptor = clientSelect
                 code = self.conn.EnviarMensaje(m)
+                if code.value == 2:
+                    print("el usuario no existe ")
+                elif code.value ==3:
+                    print("un error a ocurrido intentelo nuevamente")
 
             elif opcion == "3":
                 self.mensajesEnviados()
 
             else:
                 print('ingrese una opcion valida')
+
             print("\n\nSelecciona alguna de las siguientes opciones")
             print("1. ver lista de clientes")
             print("2. Enviar un mensaje")
@@ -62,14 +64,13 @@ class Client:
             print("4. Salir")
             opcion = input("Opcion: ")
 
-        self.__setup_ui()
-        self.window.mainloop()
 
     def __listen__for__messages(self):
         """funcion que se encarga de mostrar los mensajes solo si el destinatario es el usuario actual"""
         for note in self.conn.ChatStream(chat.Vacio()):
             if note.usernameReceptor == self.username:
-                print("Mensaje recibido de {}: {}".format(note.usernameEmisor, note.mensaje))
+                print("\nMensaje recibido de {}: {}\n".format(note.usernameEmisor, note.mensaje))
+                print("opcion:")
             
     def agregarCliente(self):
         while self.username == None:
@@ -116,26 +117,9 @@ class Client:
         for mensaje in self.conn.MensajesEnviadosPor(c):
             print("{}: {}".format(mensaje.usernameReceptor,mensaje.mensaje))
 
-    def __setup_ui(self):
-        self.chat_list = Text()
-        self.chat_list.pack(side=TOP)
-        self.lbl_username = Label(self.window, text=self.username)
-        self.lbl_username.pack(side=LEFT)
-        self.entry_message = Entry(self.window, bd=5)
-        self.entry_message.bind('<Return>', self.enviarMensaje)
-        self.entry_message.focus()
-        self.entry_message.pack(side=BOTTOM)
+    
 
 
         
 if __name__  == '__main__':
-    root = Tk() # I just used a very simple Tk window for the chat UI, this can be replaced by anything
-    frame = Frame(root, width = 300, height = 300)
-    frame.pack()
-    root.withdraw()
-    # username = None
-    # while username == None:
-    #     # retrieve a username so we can distinguish all the different clients
-    #     username = input("ingrese nombre de usuario: ")
-    root.deiconify()  # don't remember why this was needed anymore...
-    c = Client(frame) # this starts a client and thus a thread which keeps connection to server open
+    c = Client() 
